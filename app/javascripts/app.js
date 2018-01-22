@@ -8,12 +8,8 @@ import { default as contract } from 'truffle-contract'
 // Import our contract artifacts and turn them into usable abstractions.
 import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
 
-// MetaCoin is our usable abstraction, which we'll use through the code below.
 var MetaCoin = contract(metacoin_artifacts);
 
-// The following code is simple to show off interacting with your contracts.
-// As your needs grow you will likely need to change its form and structure.
-// For application bootstrapping, check out window.addEventListener below.
 var accounts;
 var account;
 
@@ -42,12 +38,12 @@ window.App = {
       self.refreshBalance();
     });
   },
-
+   // Status messages being displayed.
   setStatus: function(message) {
     var status = document.getElementById("status");
     status.innerHTML = message;
   },
-
+  // Display your Reputation-token
   refreshBalance: function() {
     var self = this;
 
@@ -60,28 +56,23 @@ window.App = {
       balance_element.innerHTML = value.valueOf();
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("Error getting balance; see log.");
+      self.setStatus("Error getting reputation; see log.");
     });
   },
-
+ // Reputation token top-up.
   sendCoin: function() {
     var self = this;
-
-    var amount = parseInt(document.getElementById("amount").value);
-    var receiver = document.getElementById("receiver").value;
-
-    this.setStatus("Initiating transaction... (please wait)");
-
+    this.setStatus("Initiating reward... (please wait)");
     var meta;
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
-      return meta.sendCoin(receiver, amount, {from: account});
+      return meta.sendCoin({from: account});
     }).then(function() {
-      self.setStatus("Transaction complete!");
+      self.setStatus("Rewarding process complete!");
       self.refreshBalance();
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("Error sending coin; see log.");
+      self.setStatus("Error topping up your reputation; see log.");
     });
   }
 };
