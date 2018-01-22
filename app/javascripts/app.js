@@ -38,12 +38,12 @@ window.App = {
       self.refreshBalance();
     });
   },
-   // Status messages being displayed.
+
   setStatus: function(message) {
     var status = document.getElementById("status");
     status.innerHTML = message;
   },
-  // Display your Reputation-token
+
   sendData: function() {
     var self = this;
 
@@ -86,19 +86,31 @@ window.App = {
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
       return meta.getData.call({from: account});
-    }).then(function(data, Hash, hash) {
-      var data_element = document.getElementById("submittedProposal");
-      data_element.innerHTML = data[0];
+    }).then(function(data) {
+      console.log(data);
+      var proposal_element = document.getElementById("submittedProposal");
+      proposal_element.innerHTML = data[0];
       var data_element = document.getElementById("submittedData");
       data_element.innerHTML = data[1];
       var hash_element = document.getElementById("submittedHash");
       hash_element.innerHTML = data[2];
+      var status_element = document.getElementById("propstatus");
+      if (data[3]==0){
+        status_element.innerHTML = '<div id="unset"></div>'; }
+      else if (data[3]==1){
+        status_element.innerHTML = '<div id="consideration"></div>'; }
+      else if (data[3]==2){
+        status_element.innerHTML = '<div id="revise"></div>'; }
+      else if (data[3]==3){
+        status_element.innerHTML = '<div id="burned"></div>'; }        
+      else if (data[4]==4){
+        status_element.innerHTML = '<div id="funded"></div>'; }              
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("Error getting balance; see log.");
+      self.setStatus("Error getting proposal data; see log.");
     });
   },
- // Reputation token top-up.  
+  
 
   sendCoin: function() {
     var self = this;

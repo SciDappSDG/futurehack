@@ -50,3 +50,39 @@ h3 {
 .hint {
   color: #666;
 }
+
+#unset {
+  background: #000;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+#consideration {
+  background: rgb(251, 255, 0);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border:1px solid black; 
+}
+#revise {
+  background: rgb(255, 115, 0);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border:1px solid black;
+}
+#burned {
+  background: #f00;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border:1px solid black;
+}
+#funded {
+  background: rgb(51, 255, 0);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border:1px solid black;
+}  
