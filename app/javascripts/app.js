@@ -44,25 +44,67 @@ window.App = {
     status.innerHTML = message;
   },
   // Display your Reputation-token
+  sendData: function() {
+    var self = this;
+
+    var name = document.getElementById("propname").value;
+    var data = document.getElementById("data").value;
+    var hash = document.getElementById("hash").value;
+
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+      meta = instance;
+      return meta.sendData(name, data, hash, {from: account});
+    }).then(function() {
+      self.setStatus("Transaction complete!");
+      self.refreshBalance();
+    }).catch(function(e) {
+      console.log(e);
+      self.setStatus("Error sending proposal data; see log.");
+    });
+  },
+
   refreshBalance: function() {
     var self = this;
 
     var meta;
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
-      return meta.getBalance.call(account, {from: account});
+      return meta.getBalance.call({from: account});
     }).then(function(value) {
       var balance_element = document.getElementById("balance");
       balance_element.innerHTML = value.valueOf();
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("Error getting reputation; see log.");
+      self.setStatus("Error getting balance; see log.");
     });
   },
- // Reputation token top-up.
+
+  refreshData: function() {
+    var self = this;
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+      meta = instance;
+      return meta.getData.call({from: account});
+    }).then(function(data, Hash, hash) {
+      var data_element = document.getElementById("submittedProposal");
+      data_element.innerHTML = data[0];
+      var data_element = document.getElementById("submittedData");
+      data_element.innerHTML = data[1];
+      var hash_element = document.getElementById("submittedHash");
+      hash_element.innerHTML = data[2];
+    }).catch(function(e) {
+      console.log(e);
+      self.setStatus("Error getting balance; see log.");
+    });
+  },
+ // Reputation token top-up.  
+
   sendCoin: function() {
     var self = this;
+    
     this.setStatus("Initiating reward... (please wait)");
+
     var meta;
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
