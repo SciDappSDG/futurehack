@@ -56,7 +56,7 @@ contract MetaCoin {
 	}
 
 	function usePower() public {
-		power[msg.sender] = 1;
+		power[msg.sender] = 0;
 		coolDown=now;
 	}
 
@@ -73,13 +73,6 @@ contract MetaCoin {
 	}
 
 	function getApplicants() public view returns(address[]) {
-/* 			Proposal[] applied;
-			for (uint i=0; i<applicants.length; i++) {
-				if (applicants[i] != msg.sender) {
-					applied.push(proposal[applicants[i]]);
-				}
-			}
-			return applied; */
 			return applicants;
 	}
 

@@ -117,7 +117,6 @@ window.App = {
     });
   }, 
 
-
   refreshData: function() {
     var self = this;
     var meta;
@@ -160,11 +159,35 @@ window.App = {
         if(s != account){
           meta.getProposal.call(s,{from: account}).then(function(PropsData){dataStor.push(PropsData)}); 
         }
-      } 
-      console.log(dataStor);
-      return(dataStor);
+      }
+      setTimeout(function (r){console.log(dataStor[0]); 
+       if(dataStor.length>=1){ 
+      document.querySelector('.Vote').innerHTML = "Proposal: " + dataStor[0][0] +",  " 
+      + "Tags: " + dataStor[0][1] +",  " + "Hash: " + dataStor[0][2] + "  _______  "+ "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Reject</button>"
+      + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Revise</button>" + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Accept</button>"; 
+       }
+
+       if(dataStor.length>=2){ 
+        document.querySelector('.Vote').innerHTML = "Proposal: " + dataStor[1][0] +",  " 
+        + "Tags: " + dataStor[1][1] +",  " + "Hash: " + dataStor[1][2] + "  _______  "+ "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Reject</button>"
+        + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Revise</button>" + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Accept</button>"; 
+         }  
+
+         if(dataStor.length>=3){ 
+          document.querySelector('.Vote').innerHTML = "Proposal: " + dataStor[2][0] +",  " 
+          + "Tags: " + dataStor[2][1] +",  " + "Hash: " + dataStor[2][2] + "  _______  "+ "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Reject</button>"
+          + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Revise</button>" + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Accept</button>"; 
+           }     
+      
+      
+      
+      
+      
+      }, 3000);
     }) 
   },   
+
+
 
 
   sendCoin: function() {
