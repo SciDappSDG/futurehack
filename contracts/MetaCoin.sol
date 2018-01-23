@@ -5,6 +5,8 @@ contract MetaCoin {
 	mapping (address => uint) reputation;
 	mapping (address => uint) power;
 
+	mapping (address => Voter) public voters;
+
 	enum Status{unset, consideration, revise, burned, funded}
 
 
@@ -15,19 +17,27 @@ contract MetaCoin {
 		string data;
 		Status status;
 		address owner;
+		uint voteCount;
 	}
 
-	Proposal public proposal;
+	    struct Voter {
+        bool voted;
+        address delegate; 
+        uint vote;
+    }
+
+	mapping (address => Proposal) proposal;	
+
 	uint public coolDown;
 
 	function MetaCoin() {
 
 		reputation[tx.origin]=1000;
 		power[tx.origin]=reputation[tx.origin]/100;
-		proposal.propname="notSet";
-		proposal.data="notSet";
-		proposal.Hash="notSet";
-		proposal.status=Status.unset;
+		proposal[tx.origin].propname="notSet";
+		proposal[tx.origin].data="notSet";
+		proposal[tx.origin].Hash="notSet";
+		proposal[tx.origin].status=Status.unset;
 		coolDown=now;
 	}
 
@@ -46,21 +56,30 @@ contract MetaCoin {
 		return power[msg.sender];
 	}
 
-	function usePower() public{
+	function usePower() public {
 		power[msg.sender] = 1;
 		coolDown=now;
 	}
 
 	function sendData(string propname, string data, string Hash) public{
-		proposal.propname = propname;
-		proposal.Hash = Hash;
-		proposal.data = data;
-		proposal.status = Status.consideration;
-		proposal.owner=msg.sender;
+		proposal[msg.sender].propname = propname;
+		proposal[msg.sender].Hash = Hash;
+		proposal[msg.sender].data = data;
+		proposal[msg.sender].status = Status.consideration;
+		proposal[msg.sender].owner=msg.sender;
 				
 	}
 	function getData() public view returns(string, string, string, Status) {
-		return (proposal.propname, proposal.data, proposal.Hash, proposal.status);
+		return (proposal[msg.sender].propname, proposal[msg.sender].data, proposal[msg.sender].Hash, proposal[msg.sender].status);
 	}
+
+	function vote(uint proposal) {
+        Voter sender = voters[msg.sender];
+        if (sender.voted)
+            throw;
+        sender.voted = true;
+        sender.vote = proposal;
+
+    }
 
 }
