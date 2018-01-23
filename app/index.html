@@ -19,13 +19,15 @@
   <br><label for="data">Tags:</label><input type="text" id="data" placeholder="Tags"></input>
   <br><label for="hash">IPFS-Hash:</label><input type="text" id="hash" placeholder="Hash"></input>
   <br><br><button id="send" onclick="App.sendData()">Propose it!</button>
-  <br><br>  
+  <br><br>
   <h3> Submitted Proposal <span class="black"><span id="submittedProposal"></span> </span></h3>
   <h3> Submitted Tags <span class="black"><span id="submittedData"></span> </span></h3>
   <h3> Submitted Hash <span class="black"><span id="submittedHash"></span> </span></h3>
   <h3> Status <span class="black"><span id="propstatus"></span> </span></h3>
   <br><br><button id="refreshData" onclick="App.refreshData()">GetTags</button>
-  <br><br><button id="usePower" onclick="App.usePower()">Use Power</button>
+  <button id="usePower" onclick="App.usePower()">Use Power</button>
+  <br><br><h1>Vote On Proposals</h1>
+  <button id="getVotingData" onclick="App.getVotingData()">Get Data to Vote about</button>
   <br><span id="status"></span>
 </body>
 </html>

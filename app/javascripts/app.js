@@ -147,7 +147,25 @@ window.App = {
       console.log(e);
       self.setStatus("Error getting proposal data; see log.");
     });
+  },
+  
+  getVotingData: function() {
+    var meta;
+    var dataStor = [];
+    MetaCoin.deployed().then(function(instance) {
+      meta = instance;
+      return (meta.getApplicants.call({from: account}));
+    }).then(function(Applicants) {   
+      for (let s of Applicants) {
+        if(s != account){
+          meta.getProposal.call(s,{from: account}).then(function(PropsData){dataStor.push(PropsData)}); 
+        }
+      } 
+      console.log(dataStor);
+      return(dataStor);
+    }) 
   },   
+
 
   sendCoin: function() {
     var self = this;

@@ -4,11 +4,11 @@ contract MetaCoin {
 
 	mapping (address => uint) reputation;
 	mapping (address => uint) power;
-
 	mapping (address => Voter) public voters;
 
 	enum Status{unset, consideration, revise, burned, funded}
-
+	
+	address[] public applicants;
 
 	struct Proposal {
 
@@ -22,11 +22,10 @@ contract MetaCoin {
 
 	    struct Voter {
         bool voted;
-        address delegate; 
         uint vote;
     }
 
-	mapping (address => Proposal) proposal;	
+	mapping (address => Proposal) public proposal;	
 
 	uint public coolDown;
 
@@ -50,7 +49,7 @@ contract MetaCoin {
 	}
 
 	function getPower() public view returns(uint) {
-		if(now>coolDown+1){
+		if(now>coolDown+30){
 		power[msg.sender]=reputation[msg.sender]/100;
 		}
 		return power[msg.sender];
@@ -66,11 +65,26 @@ contract MetaCoin {
 		proposal[msg.sender].Hash = Hash;
 		proposal[msg.sender].data = data;
 		proposal[msg.sender].status = Status.consideration;
-		proposal[msg.sender].owner=msg.sender;
+		applicants.push(msg.sender);
 				
 	}
 	function getData() public view returns(string, string, string, Status) {
 		return (proposal[msg.sender].propname, proposal[msg.sender].data, proposal[msg.sender].Hash, proposal[msg.sender].status);
+	}
+
+	function getApplicants() public view returns(address[]) {
+/* 			Proposal[] applied;
+			for (uint i=0; i<applicants.length; i++) {
+				if (applicants[i] != msg.sender) {
+					applied.push(proposal[applicants[i]]);
+				}
+			}
+			return applied; */
+			return applicants;
+	}
+
+	function getProposal(address adr) public view returns(string, string, string) {
+			return (proposal[adr].propname, proposal[adr].data, proposal[adr].Hash);
 	}
 
 	function vote(uint proposal) {
