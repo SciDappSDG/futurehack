@@ -16,13 +16,11 @@ contract MetaCoin {
 		string Hash;
 		string data;
 		Status status;
-		address owner;
-		uint voteCount;
+		int256 voteCount;
 	}
 
 	    struct Voter {
         bool voted;
-        uint vote;
     }
 
 	mapping (address => Proposal) public proposal;	
@@ -37,6 +35,7 @@ contract MetaCoin {
 		proposal[tx.origin].data="notSet";
 		proposal[tx.origin].Hash="notSet";
 		proposal[tx.origin].status=Status.unset;
+		proposal[tx.origin].voteCount=0;
 		coolDown=now;
 	}
 
@@ -68,8 +67,8 @@ contract MetaCoin {
 		applicants.push(msg.sender);
 				
 	}
-	function getData() public view returns(string, string, string, Status) {
-		return (proposal[msg.sender].propname, proposal[msg.sender].data, proposal[msg.sender].Hash, proposal[msg.sender].status);
+	function getData() public view returns(string, string, string, Status, int256) {
+		return (proposal[msg.sender].propname, proposal[msg.sender].data, proposal[msg.sender].Hash, proposal[msg.sender].status, proposal[msg.sender].voteCount);
 	}
 
 	function getApplicants() public view returns(address[]) {
@@ -80,12 +79,12 @@ contract MetaCoin {
 			return (proposal[adr].propname, proposal[adr].data, proposal[adr].Hash);
 	}
 
-	function vote(uint proposal) {
+	function Vote(int256 vote, address votee) {
         Voter sender = voters[msg.sender];
-        if (sender.voted)
-            throw;
+         if (sender.voted){
+            throw;}
         sender.voted = true;
-        sender.vote = proposal;
+		proposal[votee].voteCount += vote;
 
     }
 

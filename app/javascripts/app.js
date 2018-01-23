@@ -131,16 +131,17 @@ window.App = {
       data_element.innerHTML = data[1];
       var hash_element = document.getElementById("submittedHash");
       hash_element.innerHTML = data[2];
+      console.log(data[4].valueOf());
       var status_element = document.getElementById("propstatus");
       if (data[3]==0){
         status_element.innerHTML = '<div id="unset"></div>'; }
-      else if (data[3]==1){
+      else if (data[3]==1 && data[4].valueOf()==0){
         status_element.innerHTML = '<div id="consideration"></div>'; }
-      else if (data[3]==2){
+      else if (data[3]==2 && data[4].valueOf()==0){
         status_element.innerHTML = '<div id="revise"></div>'; }
-      else if (data[3]==3){
+      else if (data[3]==3 || data[4].valueOf()<0){
         status_element.innerHTML = '<div id="burned"></div>'; }        
-      else if (data[4]==4){
+      else if (data[3]==4 || data[4].valueOf()>0){
         status_element.innerHTML = '<div id="funded"></div>'; }              
     }).catch(function(e) {
       console.log(e);
@@ -151,6 +152,7 @@ window.App = {
   getVotingData: function() {
     var meta;
     var dataStor = [];
+    var visible = [];
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
       return (meta.getApplicants.call({from: account}));
@@ -158,36 +160,49 @@ window.App = {
       for (let s of Applicants) {
         if(s != account){
           meta.getProposal.call(s,{from: account}).then(function(PropsData){dataStor.push(PropsData)}); 
+          visible.push(s);
         }
       }
-      setTimeout(function (r){console.log(dataStor[0]); 
-       if(dataStor.length>=1){ 
-      document.querySelector('.Vote').innerHTML = "Proposal: " + dataStor[0][0] +",  " 
-      + "Tags: " + dataStor[0][1] +",  " + "Hash: " + dataStor[0][2] + "  _______  "+ "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Reject</button>"
-      + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Revise</button>" + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Accept</button>"; 
+      setTimeout(function (r){console.log(dataStor); 
+        window.data=dataStor;
+       if(visible.length>=1){ 
+         console.log(visible);
+      document.querySelector('.Vote').innerHTML = "Proposal: " + dataStor[0][0] +", " 
+      + "Tags: " + dataStor[0][1] + ",  " + "Hash: " + dataStor[0][2] + "  _______  "+ "<button id=\"vote\" onclick=\"App.Vote(-1, '"+visible[0]+"' )\">Reject</button>"
+      + "<button id=\"vote\" onclick=\"App.Vote(0, '"+visible[0]+"' )\">Revise</button>" + "<button id=\"vote\" onclick=\"App.Vote(1, '"+visible[0]+"' )\">Accept</button>"; 
        }
 
-       if(dataStor.length>=2){ 
+       if(visible.length>=2){ 
         document.querySelector('.Vote').innerHTML = "Proposal: " + dataStor[1][0] +",  " 
-        + "Tags: " + dataStor[1][1] +",  " + "Hash: " + dataStor[1][2] + "  _______  "+ "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Reject</button>"
-        + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Revise</button>" + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Accept</button>"; 
-         }  
+        + "Tags: " + dataStor[1][1] +",  " + "Hash: " + dataStor[12][2] + "  _______  "+ "<button id=\"vote\" onclick=\"App.Vote(-1,, '"+visible[0]+"' )\">Reject</button>"
+        + "<button id=\"vote\" onclick=\"App.Vote(0,, '"+visible[0]+"' )\">Revise</button>" + "<button id=\"vote\" onclick=\"App.Vote(1,, '"+visible[0]+"' )\">Accept</button>"; 
+         }
 
-         if(dataStor.length>=3){ 
+         if(visible.length>=3){ 
           document.querySelector('.Vote').innerHTML = "Proposal: " + dataStor[2][0] +",  " 
-          + "Tags: " + dataStor[2][1] +",  " + "Hash: " + dataStor[2][2] + "  _______  "+ "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Reject</button>"
-          + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Revise</button>" + "<button id=\"getVotingData\" onclick=\"App.getVotingData()\">Accept</button>"; 
+          + "Tags: " + dataStor[2][1] +",  " + "Hash: " + dataStor[2][2] + "  _______  "+ "<button id=\"vote\" onclick=\"App.Vote(-1, '"+visible[0]+"' )\">Reject</button>"
+          + "<button id=\"vote\" onclick=\"App.Vote(0, '"+visible[0]+"' )\">Revise</button>" + "<button id=\"vote\" onclick=\"App.Vote(1, '"+visible[0]+"' )\">Accept</button>";
            }     
-      
-      
-      
-      
-      
       }, 3000);
-    }) 
+    }); 
   },   
 
-
+  Vote: function(vote, adr) {
+    var self = this;
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+      meta = instance;
+      console.log(vote);
+      console.log(adr);
+      return meta.Vote(vote, adr, {from: account});
+    }).then(function() {
+      self.setStatus("Rewarding process complete!");
+      self.refreshReputation();
+    }).catch(function(e) {
+      console.log(e);
+      self.setStatus("Error topping up your reputation; see log.");
+    });
+  },
 
 
   sendCoin: function() {
