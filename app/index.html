@@ -7,8 +7,9 @@
 </head>
 <body>
   <h1>Seeding some Knowledge...</h1>
-  <h3>You have <span class="black"><span id="balance"></span> Reputation</span></h3>
-  <button id="send" onclick="App.sendCoin()">I did a great job!</button> (later some popular vote will decide that for you...) 
+  <h3>You have <span class="black"><span id="reputation"></span> Reputation</span> and <span class="black"><span id="power"></span> Power</span></h3>
+  <button id="send" onclick="App.sendCoin()">I did a great job!</button> (later some popular vote will decide that for you...)
+  <button id="refresh" onclick="App.refreshPower()">Check Power</button>
   <br><br>
 
 
@@ -24,6 +25,7 @@
   <h3> Submitted Hash <span class="black"><span id="submittedHash"></span> </span></h3>
   <h3> Status <span class="black"><span id="propstatus"></span> </span></h3>
   <br><br><button id="refreshData" onclick="App.refreshData()">GetTags</button>
+  <br><br><button id="usePower" onclick="App.usePower()">Use Power</button>
   <br><span id="status"></span>
 </body>
 </html>

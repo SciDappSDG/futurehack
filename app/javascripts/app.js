@@ -35,7 +35,8 @@ window.App = {
       accounts = accs;
       account = accounts[0];
 
-      self.refreshBalance();
+      self.refreshReputation();
+      self.refreshPower();
     });
   },
 
@@ -57,28 +58,65 @@ window.App = {
       return meta.sendData(name, data, hash, {from: account});
     }).then(function() {
       self.setStatus("Transaction complete!");
-      self.refreshBalance();
+      self.refreshReputation();
+      self.refreshPower();
     }).catch(function(e) {
       console.log(e);
       self.setStatus("Error sending proposal data; see log.");
     });
   },
 
-  refreshBalance: function() {
+  refreshReputation: function() {
     var self = this;
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+      meta = instance;
+      return meta.getReputation.call({from: account});
+    }).then(function(value) {
+      var reputation_element = document.getElementById("reputation");
+      reputation_element.innerHTML = value.valueOf();
+    }).catch(function(e) {
+      console.log(e);
+      self.setStatus("Error getting reputation balance; see log.");
+    });
+  },
+
+
+  refreshPower: function() {
+    var self = this;
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+      meta = instance;
+      return meta.getPower.call({from: account});
+    }).then(function(value) {
+      console.log("refresh");
+      var balance_element = document.getElementById("power");
+      balance_element.innerHTML = value.valueOf();
+    }).catch(function(e) {
+      console.log(e);
+      self.setStatus("Error getting power balance; see log.");
+    });
+  },  
+
+
+  usePower: function() {
+    var self = this;
+    
+    this.setStatus("Initiating reward... (please wait)");
 
     var meta;
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
-      return meta.getBalance.call({from: account});
-    }).then(function(value) {
-      var balance_element = document.getElementById("balance");
-      balance_element.innerHTML = value.valueOf();
+      return meta.usePower({from: account});
+    }).then(function() {
+      self.setStatus("Rewarding process complete!");
+      self.refreshPower();
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("Error getting balance; see log.");
+      self.setStatus("Error using your power; see log.");
     });
-  },
+  }, 
+
 
   refreshData: function() {
     var self = this;
@@ -109,8 +147,7 @@ window.App = {
       console.log(e);
       self.setStatus("Error getting proposal data; see log.");
     });
-  },
-  
+  },   
 
   sendCoin: function() {
     var self = this;
@@ -123,7 +160,7 @@ window.App = {
       return meta.sendCoin({from: account});
     }).then(function() {
       self.setStatus("Rewarding process complete!");
-      self.refreshBalance();
+      self.refreshReputation();
     }).catch(function(e) {
       console.log(e);
       self.setStatus("Error topping up your reputation; see log.");
