@@ -1,26 +1,26 @@
 pragma solidity ^0.4.17;
 
-import "./ConvertLib.sol";
-
-
 contract MetaCoin {
 
-	uint public moon = 700;
+	mapping (address => uint) reputation;
 
 	enum Status{unset, consideration, revise, burned, funded}
 
+
 	struct Proposal {
+				
 		string propname;
 		string Hash;
 		string data;
 		Status status;
+		adress owner;
 	}
 
 	Proposal public proposal;
 
 	function MetaCoin() {
 
-		
+		reputation[tx.origin]=700;
 		proposal.propname="notSet";
 		proposal.data="notSet";
 		proposal.Hash="notSet";
@@ -28,11 +28,11 @@ contract MetaCoin {
 	}
 
 	function sendCoin() public{
-		moon=moon+100;
+		reputation[msg.sender] += 100;
 	}
 
 	function getBalance() public view returns(uint) {
-		return moon;
+		return reputation[msg.sender];
 	}
 
 	function sendData(string propname, string data, string Hash) public{
@@ -40,6 +40,7 @@ contract MetaCoin {
 		proposal.Hash = Hash;
 		proposal.data = data;
 		proposal.status = Status.consideration;
+		proposal.owner=[msg.sender];
 				
 	}
 	function getData() public view returns(string, string, string, Status) {
