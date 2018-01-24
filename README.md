@@ -11,7 +11,7 @@ The dApp was written using truffle framework. The files to run the SciDapp are i
   (It works also with more accounts, not with less, as voting becomes meaningles and the voting will never "end")
 6) Play around with it.
 
-For the functionality of the programm see: functionality.pdf , for the 
+For the explanation of the functionality (!) of the programm see: https://github.com/SciDappSDG/futurehack/blob/master/Functionality.pdf
 
 
 We have created a detailed Wikipedia documentation of the project: https://github.com/SciDappSDG/futurehack/wiki
