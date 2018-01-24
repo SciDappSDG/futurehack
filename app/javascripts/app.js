@@ -166,7 +166,7 @@ window.App = {
       meta = instance;
       return meta.usePower({from: account});
     }).then(function() {
-      self.setStatus("Rewarding process complete!");
+      self.setStatus("Power used!");
       self.refreshPower();
     }).catch(function(e) {
       console.log(e);
