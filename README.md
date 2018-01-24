@@ -9,7 +9,7 @@ We have created a detailed [GitHub Wiki](https://github.com/SciDappSDG/futurehac
 [Fractal Tree Simulation code here!](https://github.com/SciDappSDG/futurehack/blob/master/Fractal_Tree.py)
 
 
-**Code Review**
+## Code Review
 
 The DApp was written using truffle framework. The files to run the SciDapp are 
 
