@@ -1,6 +1,13 @@
-# futurehack
+# futurehack SciDApp Team
 
-The dApp was written using truffle framework. The files to run the SciDapp are index.html, app.js and and app.css (inside .../app/) and MetaCoin.sol (in ../contracts/)
+The DApp was written using truffle framework. The files to run the SciDapp are index.html, app.js and and app.css (inside .../app/) and MetaCoin.sol (in ../contracts/)
+
+[index.html](https://github.com/SciDappSDG/futurehack/blob/master/app/index.html)
+
+
+https://github.com/SciDappSDG/futurehack/blob/master/app/javascripts/app.js
+https://github.com/SciDappSDG/futurehack/blob/master/app/stylesheets/app.css
+
 
 . For testing the files we recommend to download and compile the truffle webpack and follow the following workflow:
 
