@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Seeging some Knowledge...</title>
+  
+  <title>Seeding some Knowledge...</title>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script>
   <script src="./app.js"></script>
+  <script src="https://unpkg.com/ipfs-block/dist/index.min.js"></script>
 </head>
 <body>
   <h1>Seeding some Knowledge...</h1>
   <h3>You have <span class="black"><span id="reputation"></span> Reputation</span> and <span class="black"><span id="power"></span> Power</span></h3>
-  <button id="send" onclick="App.sendCoin()">I did a great job!</button> (later some popular vote will decide that for you...)
+  <button id="send" onclick="App.reward()">I did a great job!</button> (later some popular vote will decide that for you...)
   <button id="refresh" onclick="App.refreshPower()">Check Power</button>
   <br><br>
-
-
   <br>
   <h1>Send Proposal</h1>
   <br><label for="propname">Proposal:</label><input type="text" id="propname" placeholder="Name"></input>
   <br><label for="data">Tags:</label><input type="text" id="data" placeholder="Tags"></input>
   <br><label for="hash">IPFS-Hash:</label><input type="text" id="hash" placeholder="Hash"></input>
-  <br><br><button id="send" onclick="App.sendData()">Propose it!</button>
+  <br><br><button id="send" onclick="App.sendData();App.usePower();">Propose it!</button>
   <br><br>
   <h3> Submitted Proposal <span class="black"><span id="submittedProposal"></span> </span></h3>
   <h3> Submitted Tags <span class="black"><span id="submittedData"></span> </span></h3>
@@ -33,5 +33,6 @@
   <div class="Vote2"></div>
   <div class="Vote3"></div>
   <br><span id="status"></span>
+
 </body>
 </html>

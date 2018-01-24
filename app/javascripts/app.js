@@ -1,4 +1,4 @@
-// Import the page's CSS. Webpack will know what to do with it.
+// Import the page's CSS.
 import "../stylesheets/app.css";
 
 // Import libraries we need.
@@ -6,13 +6,59 @@ import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract'
 
 // Import our contract artifacts and turn them into usable abstractions.
+// As we started with the webpack from truffle the file is still called "meta-coin". We kept that name to avoid confusion during
+// the version tracking.
+
 import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
+
+//---------------------------------------------------------------------------------
+//Try some IPFS action. Does not work yet, will soon ;0 - skip to the end of IPFS-action
+//---------------------------------------------------------------------------------
+const Block = require('ipfs-block')
+
+var ipfs = IPFS()
+
+function store () {
+  var toStore = document.getElementById('source').value
+  ipfs.add(Buffer.from(toStore), function (err, res) {
+    if (err || !res) {
+      return console.error('ipfs add error', err, res)
+    }
+
+    res.forEach(function (file) {
+      if (file && file.hash) {
+        console.log('successfully stored', file.hash)
+        display(file.hash)
+      }
+    })
+  })
+}
+
+function display (hash) {
+  // buffer: true results in the returned result being a buffer rather than a stream
+  ipfs.cat(hash, {buffer: true}, function (err, res) {
+    if (err || !res) {
+      return console.error('ipfs cat error', err, res)
+    }
+
+    document.getElementById('hash').innerText = hash
+    document.getElementById('content').innerText = res.toString()
+  })
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('store').onclick = store
+})
+//---------------------------------------------------------------------------------
+// End of IPFS action
+//---------------------------------------------------------------------------------
 
 var MetaCoin = contract(metacoin_artifacts);
 
 var accounts;
 var account;
 
+// App is wrapping now all functionalities, the functions up to "setStatus" are as in truffles webpack.
 window.App = {
   start: function() {
     var self = this;
@@ -44,21 +90,33 @@ window.App = {
     var status = document.getElementById("status");
     status.innerHTML = message;
   },
+//---------------------------------------------------------------------------------
+//Now our SciDapp Logic starts.
+//---------------------------------------------------------------------------------
+
+//Allows to submit the Proposal name, the data (meaning the tags for the project i.e. "awsome SciDapp") and the IPFS hash value.
+//In a later implementation the hash would be handed over via above (not working) IPFS implementation, so that the Proposal can be written
+// and submitted via one Interface.
+//The logic can later be extended and used for submits of scientific data etc.
 
   sendData: function() {
     var self = this;
 
+//Read the three parameters out of the html code snippets of the correct ID.    
     var name = document.getElementById("propname").value;
     var data = document.getElementById("data").value;
     var hash = document.getElementById("hash").value;
 
-    var meta;
+    //get the instance of the deployed contract
+    var meta;    
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
+//now Hand over the Data to the code running on the blockchain.      
       return meta.sendData(name, data, hash, {from: account});
     }).then(function() {
-      self.setStatus("Transaction complete!");
-      self.refreshReputation();
+      self.setStatus("Proposal submitted!");
+
+  //the submission of data costs POWER - one of our two tokens - which will be updated.
       self.refreshPower();
     }).catch(function(e) {
       console.log(e);
@@ -66,6 +124,7 @@ window.App = {
     });
   },
 
+  //This function refreshes the display of REPUTATION - our POWER generating token -
   refreshReputation: function() {
     var self = this;
     var meta;
@@ -81,7 +140,7 @@ window.App = {
     });
   },
 
-
+//This function refreshes the display of POWER. POWER will be used for doing submits and payment for services (i.e. "research that for me")
   refreshPower: function() {
     var self = this;
     var meta;
@@ -98,12 +157,10 @@ window.App = {
     });
   },  
 
-
+//This function can later on be used at different instances (see above), right now it is only called when a submit is done. For the moment
+// one submit costs 5 POWER (as specified in solidity code), for later implementation it would be a variable
   usePower: function() {
     var self = this;
-    
-    this.setStatus("Initiating reward... (please wait)");
-
     var meta;
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
@@ -117,6 +174,7 @@ window.App = {
     });
   }, 
 
+  //Refreshes the display of what the user has submitted, a status will be displayed (under review, accepted, funded, burned)
   refreshData: function() {
     var self = this;
     var meta;
@@ -125,6 +183,7 @@ window.App = {
       return meta.getData.call({from: account});
     }).then(function(data) {
       console.log(data);
+      //Display the submitted data.
       var proposal_element = document.getElementById("submittedProposal");
       proposal_element.innerHTML = data[0];
       var data_element = document.getElementById("submittedData");
@@ -133,6 +192,14 @@ window.App = {
       hash_element.innerHTML = data[2];
       console.log(data[4].valueOf());
       var status_element = document.getElementById("propstatus");
+
+      //Display the status. It will be displayed as colored dots. See app.css
+      // unset = black
+      // consideration = yellow
+      // revise = orange
+      // burned = rot
+      // funded = green
+
       if (data[3]==0){
         status_element.innerHTML = '<div id="unset"></div>'; }
       else if (data[3]==1){
@@ -149,22 +216,33 @@ window.App = {
     });
   },
   
+// Displays all the proposals that do not come from the user.
   getVotingData: function() {
+    this.setStatus("Fetching the data... (please wait)");
     var meta;
     var dataStor = [];
     var visible = [];
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
+// this getApplicants function returns all(!) the porposals. The filter logic is better be done in Js than on the blockchain.    
       return (meta.getApplicants.call({from: account}));
-    }).then(function(Applicants) {   
+    }).then(function(Applicants) {  
+// now we filter. every adresses of accounts that made a proposal, that is not equal to the current account are saved into the local variable s       
       for (let s of Applicants) {
         if(s != account){
+// not we call all the specifics of the proposals using the local variable. All this is done in a loop, as solidity cannot export dynamic file types          
           meta.getProposal.call(s,{from: account}).then(function(PropsData){dataStor.push(PropsData)}); 
           visible.push(s);
         }
       }
+// now we wait 4s, that all the data is stored into dataStor. It is a messy solution, that in a later stage should be rather implemented via
+// an event listener.       
       setTimeout(function (r){console.log(dataStor); 
         window.data=dataStor;
+
+// The proposals are getting displayed together with buttons for the vote. At a later stage this should be done via a loop, that loops over 
+// the amount of proposals and it should include some filtering according to the users reputation and the tags of the proposal.
+// For the vote we simply send -1, 0 or +1 as a value to the voting function together with the according adress of the proposal.        
        if(visible.length>=1){ 
          console.log(visible);
       document.querySelector('.Vote').innerHTML = "Proposal: " + dataStor[0][0] +", " 
@@ -186,7 +264,7 @@ window.App = {
       }, 4000);
     }); 
   },   
-
+// the function vote is being called via "onclick" inside the getVotingData, see above. 
   Vote: function(vote, adr) {
     var self = this;
     var meta;
@@ -196,16 +274,17 @@ window.App = {
       console.log(adr);
       return meta.Vote(vote, adr, {from: account});
     }).then(function() {
-      self.setStatus("Rewarding process complete!");
+      self.setStatus("Voting done!");
       self.refreshReputation();
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("Error topping up your reputation; see log.");
+      self.setStatus("Voting error; see log.");
     });
   },
 
-
-  sendCoin: function() {
+// This function is displayed here for testing purposes. It normally would be triggered via a vote on for instance a 
+// completed project to award the scientist. It would award with the primary, not tradable token REPUTATION.
+  reward: function() {
     var self = this;
     
     this.setStatus("Initiating reward... (please wait)");
@@ -213,7 +292,7 @@ window.App = {
     var meta;
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
-      return meta.sendCoin({from: account});
+      return meta.reward({from: account});
     }).then(function() {
       self.setStatus("Rewarding process complete!");
       self.refreshReputation();
@@ -223,6 +302,12 @@ window.App = {
     });
   }
 };
+
+//---------------------------------------------------------------------------------
+//End of our SciDapp Logic.
+//---------------------------------------------------------------------------------
+
+
 
 window.addEventListener('load', function() {
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)
