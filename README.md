@@ -6,6 +6,7 @@ We have created a detailed [GitHub Wiki](https://github.com/SciDappSDG/futurehac
   <img width="260" height="300" src="https://github.com/SciDappSDG/futurehack/blob/master/EinApfelBaum.gif">
 </p>
 
+This is a depiction of how the scientific tree of knowledge is branching out for a given seeding problem. It is also a representation of our programms structure.
 [Fractal Tree Simulation code here!](https://github.com/SciDappSDG/futurehack/blob/master/Fractal_Tree.py)
 
 
@@ -37,7 +38,9 @@ For testing the files we recommend to download and compile the [Truffle Webpack]
 
 ## For explanation of the UI functionality (!) see: 
 
-https://github.com/SciDappSDG/futurehack/blob/master/Functionality.pdf
+<p align="center">
+  <img width="auto" height="auto" src="https://github.com/SciDappSDG/futurehack/blob/master/GUI description.png">
+</p>
 
 
 ## A flow diagram of the (later stage) smart contract logic can be found here:
