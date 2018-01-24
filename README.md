@@ -1,15 +1,13 @@
 # futurehack SciDApp Team
 
-The DApp was written using truffle framework. The files to run the SciDapp are index.html, app.js and and app.css (inside .../app/) and MetaCoin.sol (in ../contracts/)
-
+The DApp was written using truffle framework. The files to run the SciDapp are 
 [index.html](https://github.com/SciDappSDG/futurehack/blob/master/app/index.html)
+[app.js](https://github.com/SciDappSDG/futurehack/blob/master/app/javascripts/app.js)
+[app.css](https://github.com/SciDappSDG/futurehack/blob/master/app/stylesheets/app.css) (inside .../app/) and 
 
+ (in ../contracts/)
 
-https://github.com/SciDappSDG/futurehack/blob/master/app/javascripts/app.js
-https://github.com/SciDappSDG/futurehack/blob/master/app/stylesheets/app.css
-
-
-. For testing the files we recommend to download and compile the truffle webpack and follow the following workflow:
+For testing the files we recommend to download and compile the [Truffle Webpack] (http://truffleframework.com/tutorials/bundling-with-webpack) and follow the following workflow:
 
 0) Install truffle framework, unpack webpack, install ganache as local blockchain.
 1) Start ganache and the web lite server (npm run dev). Watch out that the truffle.js file of your truffle folder has the same port as ganache is listening to.
