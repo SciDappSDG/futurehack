@@ -14,7 +14,7 @@ import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
 //---------------------------------------------------------------------------------
 //Try some IPFS action. Does not work yet, will soon ;0 - skip to the end of IPFS-action
 //---------------------------------------------------------------------------------
-const Block = require('ipfs-block')
+/* const Block = require('ipfs-block')
 
 var ipfs = IPFS()
 
@@ -48,7 +48,7 @@ function display (hash) {
 
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('store').onclick = store
-})
+}) */
 //---------------------------------------------------------------------------------
 // End of IPFS action
 //---------------------------------------------------------------------------------
