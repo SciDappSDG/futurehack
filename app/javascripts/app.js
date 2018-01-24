@@ -135,13 +135,13 @@ window.App = {
       var status_element = document.getElementById("propstatus");
       if (data[3]==0){
         status_element.innerHTML = '<div id="unset"></div>'; }
-      else if (data[3]==1 && data[4].valueOf()==0){
+      else if (data[3]==1){
         status_element.innerHTML = '<div id="consideration"></div>'; }
-      else if (data[3]==2 && data[4].valueOf()==0){
+      else if (data[3]==2){
         status_element.innerHTML = '<div id="revise"></div>'; }
-      else if (data[3]==3 || data[4].valueOf()<0){
+      else if (data[3]==3){
         status_element.innerHTML = '<div id="burned"></div>'; }        
-      else if (data[3]==4 || data[4].valueOf()>0){
+      else if (data[3]==4){
         status_element.innerHTML = '<div id="funded"></div>'; }              
     }).catch(function(e) {
       console.log(e);
@@ -173,17 +173,17 @@ window.App = {
        }
 
        if(visible.length>=2){ 
-        document.querySelector('.Vote').innerHTML = "Proposal: " + dataStor[1][0] +",  " 
-        + "Tags: " + dataStor[1][1] +",  " + "Hash: " + dataStor[12][2] + "  _______  "+ "<button id=\"vote\" onclick=\"App.Vote(-1,, '"+visible[0]+"' )\">Reject</button>"
-        + "<button id=\"vote\" onclick=\"App.Vote(0,, '"+visible[0]+"' )\">Revise</button>" + "<button id=\"vote\" onclick=\"App.Vote(1,, '"+visible[0]+"' )\">Accept</button>"; 
+        document.querySelector('.Vote2').innerHTML = "Proposal: " + dataStor[1][0] +",  " 
+        + "Tags: " + dataStor[1][1] +",  " + "Hash: " + dataStor[1][2] + "  _______  "+ "<button id=\"vote\" onclick=\"App.Vote(-1, '"+visible[1]+"' )\">Reject</button>"
+        + "<button id=\"vote\" onclick=\"App.Vote(0, '"+visible[1]+"' )\">Revise</button>" + "<button id=\"vote\" onclick=\"App.Vote(1, '"+visible[1]+"' )\">Accept</button>"; 
          }
 
          if(visible.length>=3){ 
-          document.querySelector('.Vote').innerHTML = "Proposal: " + dataStor[2][0] +",  " 
-          + "Tags: " + dataStor[2][1] +",  " + "Hash: " + dataStor[2][2] + "  _______  "+ "<button id=\"vote\" onclick=\"App.Vote(-1, '"+visible[0]+"' )\">Reject</button>"
-          + "<button id=\"vote\" onclick=\"App.Vote(0, '"+visible[0]+"' )\">Revise</button>" + "<button id=\"vote\" onclick=\"App.Vote(1, '"+visible[0]+"' )\">Accept</button>";
+          document.querySelector('.Vote3').innerHTML = "Proposal: " + dataStor[2][0] +",  " 
+          + "Tags: " + dataStor[2][1] +",  " + "Hash: " + dataStor[2][2] + "  _______  "+ "<button id=\"vote\" onclick=\"App.Vote(-1, '"+visible[2]+"' )\">Reject</button>"
+          + "<button id=\"vote\" onclick=\"App.Vote(0, '"+visible[2]+"' )\">Revise</button>" + "<button id=\"vote\" onclick=\"App.Vote(1, '"+visible[2]+"' )\">Accept</button>";
            }     
-      }, 3000);
+      }, 4000);
     }); 
   },   
 

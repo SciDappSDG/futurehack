@@ -4,7 +4,8 @@ contract MetaCoin {
 
 	mapping (address => uint) reputation;
 	mapping (address => uint) power;
-	mapping (address => Voter) public voters;
+	mapping (address => Voter) voters;
+	
 
 	enum Status{unset, consideration, revise, burned, funded}
 	
@@ -17,10 +18,10 @@ contract MetaCoin {
 		string data;
 		Status status;
 		int256 voteCount;
+		uint votesDone;		
 	}
-
 	    struct Voter {
-        bool voted;
+		mapping (address => bool) votedFor;
     }
 
 	mapping (address => Proposal) public proposal;	
@@ -67,8 +68,8 @@ contract MetaCoin {
 		applicants.push(msg.sender);
 				
 	}
-	function getData() public view returns(string, string, string, Status, int256) {
-		return (proposal[msg.sender].propname, proposal[msg.sender].data, proposal[msg.sender].Hash, proposal[msg.sender].status, proposal[msg.sender].voteCount);
+	function getData() public view returns(string, string, string, Status, int256, uint) {
+		return (proposal[msg.sender].propname, proposal[msg.sender].data, proposal[msg.sender].Hash, proposal[msg.sender].status, proposal[msg.sender].voteCount, proposal[msg.sender].votesDone);
 	}
 
 	function getApplicants() public view returns(address[]) {
@@ -79,13 +80,32 @@ contract MetaCoin {
 			return (proposal[adr].propname, proposal[adr].data, proposal[adr].Hash);
 	}
 
-	function Vote(int256 vote, address votee) {
-        Voter sender = voters[msg.sender];
-         if (sender.voted){
-            throw;}
-        sender.voted = true;
-		proposal[votee].voteCount += vote;
+	function Vote(int256 vote, address applicant) {
+       Voter sender = voters[msg.sender];
+    	
+		require (!voters[msg.sender].votedFor[applicant]);
 
-    }
+        sender.votedFor[applicant] = true;
+		proposal[applicant].votesDone +=1;
+		proposal[applicant].voteCount += vote;
+
+		uint votesNeeded=2; // for testing purposes. It should be the list of acitve metamask accounts, which currently cannot be retrieved.
+		// https://github.com/MetaMask/metamask-extension/issues/1648 
+		
+		if (proposal[applicant].votesDone == votesNeeded){
+	
+			if(proposal[applicant].voteCount>0){
+				 proposal[applicant].status = Status.funded; 
+			}
+			if(proposal[applicant].voteCount==0){
+				 proposal[applicant].status = Status.revise; 
+			}
+			if(proposal[applicant].voteCount<0){
+				 proposal[applicant].status = Status.burned; 
+			}
+		
+	  
+    	}
+	}
 
 }
