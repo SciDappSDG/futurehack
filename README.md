@@ -35,19 +35,21 @@ For testing the files we recommend to download and compile the [Truffle Webpack]
 
 ! If you switch between users/ MetaMask accounts in MetaMask press refresh on the browser!
 
-For the explanation of the functionality (!) of the programm see: 
+## For the explanation of the functionality (!) of the programm see: 
 
 https://github.com/SciDappSDG/futurehack/blob/master/Functionality.pdf
 
 
-A flow diagram of the (later stage) smart contract logic can be found here: 
+**A flow diagram of the (later stage) smart contract logic can be found here:
+
 https://github.com/SciDappSDG/futurehack/wiki/Flow-diagram-of-Sci%C4%90App-Smart-contracts 
 The recursiveness has not yet been implemented. We have created the "seed" though. In the end this recursive structure (contract creates a contract) will lead to the structure of a Merkle Tree.
 
 
-A flow diagram of the token mechanics can be found here:
+**A flow diagram of the token mechanics can be found here:
+
 https://github.com/SciDappSDG/futurehack/wiki/Token-mechanics
 
 Have fun playing!
 
-For questions, contact support at gotthold.flaeschner@bsse.ethz.ch
+# For questions, contact support at gotthold.flaeschner@bsse.ethz.ch
