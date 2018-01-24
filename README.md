@@ -37,8 +37,7 @@ For testing the files we recommend to download and compile the [Truffle Webpack]
 
 ## For explanation of the UI functionality (!) see: 
 
-[[UI|https://github.com/SciDappSDG/futurehack/blob/master/Functionality.pdf]]
-
+https://github.com/SciDappSDG/futurehack/blob/master/Functionality.pdf
 
 
 **A flow diagram of the (later stage) smart contract logic can be found here:
@@ -53,4 +52,4 @@ https://github.com/SciDappSDG/futurehack/wiki/Token-mechanics
 
 Have fun playing!
 
-# For questions, contact support at gotthold.flaeschner@bsse.ethz.ch
+## For questions, contact support at gotthold.flaeschner@bsse.ethz.ch
