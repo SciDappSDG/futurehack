@@ -35,9 +35,10 @@ For testing the files we recommend to download and compile the [Truffle Webpack]
 
 ! If you switch between users/ MetaMask accounts in MetaMask press refresh on the browser!
 
-## For the explanation of the functionality (!) of the programm see: 
+## For explanation of the UI functionality (!) see: 
 
-https://github.com/SciDappSDG/futurehack/blob/master/Functionality.pdf
+[[UI|https://github.com/SciDappSDG/futurehack/blob/master/Functionality.pdf]]
+
 
 
 **A flow diagram of the (later stage) smart contract logic can be found here:
