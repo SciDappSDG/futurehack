@@ -29,9 +29,7 @@ For the explanation of the functionality (!) of the programm see:
 https://github.com/SciDappSDG/futurehack/blob/master/Functionality.pdf
 
 
-We have created a detailed Wikipedia documentation of the project with futher background information:
-
-https://github.com/SciDappSDG/futurehack/wiki
+We have created a detailed [GitHub Wiki](https://github.com/SciDappSDG/futurehack/wiki) documentation of the project with futher background information:
 
 A flow diagram of the (later stage) smart contract logic can be found here: 
 https://github.com/SciDappSDG/futurehack/wiki/Flow-diagram-of-Sci%C4%90App-Smart-contracts 
