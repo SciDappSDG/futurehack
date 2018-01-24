@@ -17,8 +17,9 @@ For the functionality of the programm see: functionality.pdf , for the
 We have created a detailed Wikipedia documentation of the project: https://github.com/SciDappSDG/futurehack/wiki
 
 
-A flow diagram of the smart contract logic can be found here: 
-https://github.com/SciDappSDG/futurehack/wiki/Flow-diagram-of-Sci%C4%90App-Smart-contracts
+A flow diagram of the (later stage) smart contract logic can be found here: 
+https://github.com/SciDappSDG/futurehack/wiki/Flow-diagram-of-Sci%C4%90App-Smart-contracts 
+The recursiveness has not yet been implemented. We have created the "seed" though. In the end this recursive structure (contract creates a contract) will lead to the structure of a Merkle Tree.
 
 
 A flow diagram of the token mechanics can be found here:
